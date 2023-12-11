@@ -1,6 +1,5 @@
-package RabbitGame;
+package RabbitGame.Man;
 
-import Start.AnimListener;
 import Texture.TextureReader;
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -11,7 +10,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class RabbitGLEventListener extends RabbitListener{
+public class RabbitGLEventListener extends RabbitListener {
 
 
         int animationIndex = 0;
@@ -30,7 +29,7 @@ public class RabbitGLEventListener extends RabbitListener{
         boolean displayed;
          boolean mouseClick = false;
         int x = maxWidth / 2, y = maxHeight / 2;
-        boolean sound, changeState, levels, back, easy = false;
+        boolean sound, changeState, levels, back, easy = false , meduim = false , hard= false;
         private int mouseX, mouseY;
          int x2 = 0, y2 = 0;
 
@@ -38,8 +37,7 @@ public class RabbitGLEventListener extends RabbitListener{
       private final TextRenderer textRenderer = new TextRenderer(new Font("SansSerif", Font.PLAIN, 24));
         String textureNames[] = {"Rabbit.png", "Hammer.png", "Hole.png", "Boom.png", "Hit.png", "Back.png",
                 "play.png","exit.png","soundOn.png", "soundOff.png" , "easy.png", "medium.png", "hard.png",
-                "backbtn.png", "hammmmer3.png","HowToPlay.png","playAgain.png","home.png",
-                "restart.png","resume.png","back1.jpg"};
+                "backbtn.png", "hammmmer3.png","HowToPlay.png","back1.jpg"};
         TextureReader.Texture texture[] = new TextureReader.Texture[textureNames.length];
         int textures[] = new int[textureNames.length];
 
@@ -241,6 +239,79 @@ public class RabbitGLEventListener extends RabbitListener{
 
         DrawBackground(gl);
             if(easy && levels) {
+                changev(gl , 1000);
+
+            } else if (meduim && levels) {
+                changev(gl , 700);
+
+
+            } else if (hard  && levels) {
+                changev(gl , 400);
+
+            }
+
+
+            //start menu
+            else if(levels && back==false) {
+                DrawBackground2(gl);
+                DrawLevels(gl, x,y );
+                DrawSound(gl, x, y, 8);
+            }
+            else  if(back && levels) {
+                DrawBackground2(gl);
+                DrawPlay(gl, x, y, 6);
+                DrawHowToPlay(gl, x, y,15);
+                DrawExit(gl, x, y, 7);
+                DrawSound(gl, x, y, 8);
+                back = false;
+                levels=false;
+            } else if (meduim&& levels) {
+
+            } else {
+                DrawBackground2(gl);
+
+                DrawPlay(gl, x, y, 6);
+                DrawExit(gl, x, y, 7);
+                DrawHowToPlay(gl, x, y,15);
+                DrawSound(gl, x, y, 8);
+            }
+
+
+        }
+//        handleKeyPress();
+
+        @Override
+        public void reshape (GLAutoDrawable glAutoDrawable,int i, int i1, int i2, int i3){
+
+    }
+
+        @Override
+        public void displayChanged (GLAutoDrawable glAutoDrawable,boolean b, boolean b1){
+
+    }
+    public void changev(GL gl , double  v){
+       DrawSprite(gl, x - 30, y, 2, 2);
+        DrawSprite(gl, x, y, 2, 2);
+        DrawSprite(gl, x + 30, y, 2, 2);
+
+        //second row
+        DrawSprite(gl, x - 30, y - 15, 2, 2);
+        DrawSprite(gl, x, y - 15, 2, 2);
+        DrawSprite(gl, x + 30, y - 15, 2, 2);
+
+        //third row
+        DrawSprite(gl, x - 30, y - 30, 2, 2);
+        DrawSprite(gl, x, y - 30, 2, 2);
+        DrawSprite(gl, x + 30, y - 30, 2, 2);
+        animationIndex = animationIndex % 4;
+        GenerateRabbit(v);
+        DrawRabbit(gl);
+
+        DrawHammer(gl);
+        if (xclicked >= xpos - 5 && xclicked <= xpos + 10) {
+            if (yclicked >= ypos - 10 && yclicked <= ypos + 16) {
+                DrawBackground(gl);
+
                 //first row
                 DrawSprite(gl, x - 30, y, 2, 2);
                 DrawSprite(gl, x, y, 2, 2);
@@ -255,81 +326,21 @@ public class RabbitGLEventListener extends RabbitListener{
                 DrawSprite(gl, x - 30, y - 30, 2, 2);
                 DrawSprite(gl, x, y - 30, 2, 2);
                 DrawSprite(gl, x + 30, y - 30, 2, 2);
-                animationIndex = animationIndex % 4;
-                GenerateRabbit();
-                DrawRabbit(gl);
 
-                DrawHammer(gl);
-                if (xclicked >= xpos - 5 && xclicked <= xpos + 10) {
-                    if (yclicked >= ypos - 10 && yclicked <= ypos + 16) {
-                        DrawBackground(gl);
+                DrawSprite(gl, xpos, ypos, 3, 2);
+                xclicked = 200;
+                yclicked = 200;
 
-                        //first row
-                        DrawSprite(gl, x - 30, y, 2, 2);
-                        DrawSprite(gl, x, y, 2, 2);
-                        DrawSprite(gl, x + 30, y, 2, 2);
-
-                        //second row
-                        DrawSprite(gl, x - 30, y - 15, 2, 2);
-                        DrawSprite(gl, x, y - 15, 2, 2);
-                        DrawSprite(gl, x + 30, y - 15, 2, 2);
-
-                        //third row
-                        DrawSprite(gl, x - 30, y - 30, 2, 2);
-                        DrawSprite(gl, x, y - 30, 2, 2);
-                        DrawSprite(gl, x + 30, y - 30, 2, 2);
-
-                        DrawSprite(gl, xpos, ypos, 3, 2);
-                        xclicked = 200;
-                        yclicked = 200;
-                    }
-                }
-            }
-
-        //start menu
-            else if(levels && back==false) {
-                DrawBackground2(gl);
-                DrawLevels(gl, x,y );
-                DrawSound(gl, x, y, 8);
-            }
-            else  if(back && levels) {
-                DrawBackground2(gl);
-                DrawPlay(gl, x, y, 6);
-                DrawHowToPlay(gl, x, y,15);
-                DrawExit(gl, x, y, 7);
-                DrawSound(gl, x, y, 8);
-                back = false;
-                levels=false;
-            }
-            else {
-                DrawBackground2(gl);
-
-                DrawPlay(gl, x, y, 6);
-                DrawExit(gl, x, y, 7);
-                DrawHowToPlay(gl, x, y,15);
-                DrawSound(gl, x, y, 8);
-            }
-
-
-    }
-//        handleKeyPress();
-
-        @Override
-        public void reshape (GLAutoDrawable glAutoDrawable,int i, int i1, int i2, int i3){
-
-    }
-
-        @Override
-        public void displayChanged (GLAutoDrawable glAutoDrawable,boolean b, boolean b1){
-
-    }
-        public void GenerateRabbit () {
+    }}}
+        public void GenerateRabbit ( double v) {
         endtime = System.currentTimeMillis();
-        if (endtime - starttime > 1000) {
+
+        if (endtime - starttime > v) {
             starttime = endtime;
             ir = (int) (Math.random() * 3);
             jr = (int) (Math.random() * 3);
-        }
+
+       }
 
     }
         public void DrawRabbit (GL gl){
@@ -405,6 +416,14 @@ public class RabbitGLEventListener extends RabbitListener{
         }
         else  if(mouseX >= 38 && mouseX <= 60 && mouseY <= 77 && mouseY >= 65 && levels ) {
             easy = true;
+
+        }
+        else  if(mouseX >= 38 && mouseX <= 61 && mouseY <= 58 && mouseY >= 44 && levels ) {
+            meduim = true;
+
+        }
+        else  if(mouseX >= 38 && mouseX <= 61 && mouseY <= 38 && mouseY >= 24 && levels ) {
+            meduim = true;
 
         }
 
