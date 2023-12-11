@@ -1,0 +1,93 @@
+GLUT glut=new GLUT();
+int score=0;
+
+
+
+
+public void display (GLAutoDrawable glAutoDrawable){
+        GL gl = glAutoDrawable.getGL();
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT);       //Clear The Screen And The Depth Buffer
+        gl.glLoadIdentity();
+
+        DrawBackground(gl);
+        if(easy && levels) {
+            //first row
+            DrawSprite(gl, x - 30, y, 2, 2);
+            DrawSprite(gl, x, y, 2, 2);
+            DrawSprite(gl, x + 30, y, 2, 2);
+
+            //second row
+            DrawSprite(gl, x - 30, y - 15, 2, 2);
+            DrawSprite(gl, x, y - 15, 2, 2);
+            DrawSprite(gl, x + 30, y - 15, 2, 2);
+
+            //third row
+            DrawSprite(gl, x - 30, y - 30, 2, 2);
+            DrawSprite(gl, x, y - 30, 2, 2);
+            DrawSprite(gl, x + 30, y - 30, 2, 2);
+            animationIndex = animationIndex % 4;
+            GenerateRabbit();
+            DrawRabbit(gl);
+
+            DrawHammer(gl);
+            if (xclicked >= xpos - 5 && xclicked <= xpos + 10) {
+                if (yclicked >= ypos - 10 && yclicked <= ypos + 16) {
+                    DrawBackground(gl);
+
+                    //first row
+                    DrawSprite(gl, x - 30, y, 2, 2);
+                    DrawSprite(gl, x, y, 2, 2);
+                    DrawSprite(gl, x + 30, y, 2, 2);
+
+                    //second row
+                    DrawSprite(gl, x - 30, y - 15, 2, 2);
+                    DrawSprite(gl, x, y - 15, 2, 2);
+                    DrawSprite(gl, x + 30, y - 15, 2, 2);
+
+                    //third row
+                    DrawSprite(gl, x - 30, y - 30, 2, 2);
+                    DrawSprite(gl, x, y - 30, 2, 2);
+                    DrawSprite(gl, x + 30, y - 30, 2, 2);
+
+                    DrawSprite(gl, xpos, ypos, 3, 2);
+                    xclicked = 200;
+                    yclicked = 200;
+                    score ++;
+                }
+            }
+        }
+
+        //start menu
+        else if(levels && back==false) {
+            DrawBackground2(gl);
+            DrawLevels(gl, x,y );
+            DrawSound(gl, x, y, 8);
+        }
+        else  if(back && levels) {
+            DrawBackground2(gl);
+            DrawPlay(gl, x, y, 6);
+            DrawHowToPlay(gl, x, y,15);
+            DrawExit(gl, x, y, 7);
+            DrawSound(gl, x, y, 8);
+            back = false;
+            levels=false;
+        }
+        else {
+            DrawBackground2(gl);
+
+            DrawPlay(gl, x, y, 6);
+            DrawExit(gl, x, y, 7);
+            DrawHowToPlay(gl, x, y,15);
+            DrawSound(gl, x, y, 8);
+        }
+
+        drawScore(gl);
+    }
+
+    private void drawScore(GL gl){
+        gl.glRasterPos2f(-0.9f,0.9f);
+        String scoreString="Score"+ score;
+        for(char c:scoreString.toCharArray()){
+            glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18,(char)c);
+        }
+    }
