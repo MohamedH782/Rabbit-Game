@@ -7,64 +7,18 @@ public void display(GLAutoDrawable glAutoDrawable) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);       //Clear The Screen And The Depth Buffer
         gl.glLoadIdentity();
 
-//        DrawBackground(gl);
+        DrawBackground(gl);
 
-        if (lives > 0) {
-            // Render the game elements when lives are greater than 0
-            DrawBackground(gl);
-            drawScore(gl);
-            DrawTimer(gl);
-            drawLives(gl);
+        if (lives>0){
             if (easy && levels) {
-                //first row
-                DrawSprite(gl, x - 30, y, 2, 2);
-                DrawSprite(gl, x, y, 2, 2);
-                DrawSprite(gl, x + 30, y, 2, 2);
+                changev(gl, 1000);
+            } else if (meduim && levels) {
+                changev(gl, 700);
+            } else if (hard && levels) {
+                changev(gl, 700);
+            }
 
-                //second row
-                DrawSprite(gl, x - 30, y - 15, 2, 2);
-                DrawSprite(gl, x, y - 15, 2, 2);
-                DrawSprite(gl, x + 30, y - 15, 2, 2);
-
-                //third row
-                DrawSprite(gl, x - 30, y - 30, 2, 2);
-                DrawSprite(gl, x, y - 30, 2, 2);
-                DrawSprite(gl, x + 30, y - 30, 2, 2);
-                animationIndex = animationIndex % 4;
-                GenerateRabbit();
-                DrawRabbit(gl);
-
-                DrawHammer(gl);
-                if (xclicked >= xpos - 5 && xclicked <= xpos + 10) {
-                    if (yclicked >= ypos - 10 && yclicked <= ypos + 16) {
-                        DrawBackground(gl);
-
-                        //first row
-                        DrawSprite(gl, x - 30, y, 2, 2);
-                        DrawSprite(gl, x, y, 2, 2);
-                        DrawSprite(gl, x + 30, y, 2, 2);
-
-                        //second row
-                        DrawSprite(gl, x - 30, y - 15, 2, 2);
-                        DrawSprite(gl, x, y - 15, 2, 2);
-                        DrawSprite(gl, x + 30, y - 15, 2, 2);
-
-                        //third row
-                        DrawSprite(gl, x - 30, y - 30, 2, 2);
-                        DrawSprite(gl, x, y - 30, 2, 2);
-                        DrawSprite(gl, x + 30, y - 30, 2, 2);
-
-                        DrawSprite(gl, xpos, ypos, 3, 2);
-                        xclicked = 200;
-                        yclicked = 200;
-                        score++;
-                    }
-
-                }
-                drawScore(gl);
-                DrawTimer(gl);
-                drawLives(gl);
-            } //start menu
+            //start menu
             else if (levels && back == false) {
                 DrawBackground2(gl);
                 DrawLevels(gl, x, y);
@@ -85,14 +39,10 @@ public void display(GLAutoDrawable glAutoDrawable) {
                 DrawHowToPlay(gl, x, y, 15);
                 DrawSound(gl, x, y, 8);
             }
-            // ... (other game rendering code)
-
-        } else {
-            // Render game over message when lives are 0
-            DrawGameOverMessage(gl);
-        }
+        } else if (lives==0) {}
 
     }
+  
 void handleMousePressed() {
         if (xclicked >= 88 && xclicked <= 95 && yclicked <= 96 && yclicked >= 90) {
             changeState = true;
@@ -100,13 +50,16 @@ void handleMousePressed() {
             levels = true;
             System.out.println("play");
 
-            // Set the gameStarted flag to true only when the game starts
-
         } else if (xclicked >= 4 && xclicked <= 10 && yclicked <= 96 && yclicked >= 90) {
             back = true;
-        } else if (xclicked >= 38 && xclicked <= 60 && yclicked <= 77 && yclicked >= 65 && levels ) {
-            // Decrement lives only when the game has started
+        } else if (xclicked >= 38 && xclicked <= 60 && yclicked <= 77 && yclicked >= 65 && levels) {
             easy = true;
+            gameStarted=true;
+        } else if (xclicked >= 38 && xclicked <= 61 && yclicked <= 58 && yclicked >= 44 && levels) {
+            meduim = true;
+            gameStarted=true;
+        } else if (xclicked >= 38 && xclicked <= 61 && yclicked <= 38 && yclicked >= 24 && levels) {
+            hard = true;
             gameStarted=true;
         }
 
@@ -131,6 +84,13 @@ void handleMousePressed() {
             lives--;
         }
 
+    }
+private void drawlives(GL gl) {
+        gl.glRasterPos2f(-0.9f, .7f);
+        String scoreString = "lives: " + lives;
+        for (char c : scoreString.toCharArray()) {
+            glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, (char) c);
+        }
     }
  private void DrawGameOverMessage(GL gl) {
         // Set color and size for the game over message
