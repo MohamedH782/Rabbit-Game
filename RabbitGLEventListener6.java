@@ -8,6 +8,7 @@ import javax.sound.sampled.*;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -148,7 +149,7 @@ public class RabbitGLEventListener6 extends RabbitListener {
                 e.printStackTrace();
             }
         }
-
+displayBackGroundSound();
     }
 
     public void DrawSprite(GL gl, int x, int y, int index, float scale) {
@@ -287,19 +288,21 @@ public class RabbitGLEventListener6 extends RabbitListener {
                 DrawHowToPlay(gl, x, y, 15);
                 //DrawSound(gl, x, y, 8);
             }
-//            if ((easy && levels)||(easy && levels&&restart)){
-//                changev(gl, 1000);
-//            } else if ((meduim && levels)||(meduim && levels&&restart)) {
-//                changev(gl, 700);
-//            } else if ((hard && levels)||(hard && levels&&restart)) {
-//                changev(gl, 400);
-//            }
+
              if (puase && levels==false) {
                 DrawBackground2(gl);
                 Drawpuasemenu(gl, x,y );
+                 if ((easy && levels)){
+                     changev(gl, 1000);
+                 } else if ((meduim && levels)) {
+                     changev(gl, 700);
+                 } else if ((hard && levels)) {
+                     changev(gl, 400);
+                 }
 
-            }
-            
+
+             }
+
         } else {
 
             DrawGameOverMessage(gl);
@@ -491,6 +494,7 @@ public class RabbitGLEventListener6 extends RabbitListener {
        else if (xclicked >= 88 && xclicked <= 95 && yclicked <= 96 && yclicked >= 90) {
             changeState = true;
         } else if (xclicked >= 38 && xclicked <= 60 && yclicked <= 77 && yclicked >= 65 && levels == false) {
+           String user= JOptionPane.showInputDialog("input username");
             levels = true;
 
         } else if (xclicked >= 4 && xclicked <= 10 && yclicked <= 96 && yclicked >= 90) {
@@ -501,11 +505,13 @@ public class RabbitGLEventListener6 extends RabbitListener {
             
 
         } else if (xclicked >= 38 && xclicked <= 61 && yclicked <= 58 && yclicked >= 44 && levels) {
+
             meduim = true;
             gameStarted = true;
 
 
         } else if (xclicked >= 38 && xclicked <= 61 && yclicked <= 38 && yclicked >= 24 && levels) {
+
             hard = true;
             gameStarted = true;
 
